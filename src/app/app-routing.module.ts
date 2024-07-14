@@ -10,14 +10,15 @@ import { PrivateSectionComponent } from './components/private-section/private-se
 import { PdfViewerComponent } from './components/pdf-viewer/pdf-viewer.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: 'home', component: HomeComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'password-recovery', component: PasswordRecoveryComponent },
   { path: 'profile-modification', component: ProfileModificationComponent },
   { path: 'admin-section', component: AdminSectionComponent },
   { path: 'private-section', component: PrivateSectionComponent },
-  { path: 'pdf-viewer', component: PdfViewerComponent }
+  { path: 'pdf-viewer', component: PdfViewerComponent },
+  { path: '**', redirectTo: 'home' }
 ];
 
 @NgModule({

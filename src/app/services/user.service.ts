@@ -11,6 +11,7 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   getUsers(): Observable<any> {
+    console.log('Obteniendo todos los usuarios');
     return this.http.get(this.apiUrl);
   }
 
@@ -30,7 +31,9 @@ export class UserService {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
 
-  authenticateUser(email: string, password: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}?email=${email}&password=${password}`);
+  authenticateUser(username: string, password: string): Observable<any> {
+    const queryUrl = `${this.apiUrl}?username=${username}&password=${password}`;
+    console.log(`Authenticating user with URL: ${queryUrl}`);
+    return this.http.get(queryUrl);
   }
 }

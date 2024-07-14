@@ -24,7 +24,8 @@ export class RegisterComponent implements OnInit {
     this.registerForm = this.formBuilder.group({
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      password: ['', [Validators.required, Validators.minLength(8)]],
+      confirmPassword: ['', Validators.required]
     });
   }
 
@@ -50,6 +51,11 @@ export class RegisterComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
     if (this.registerForm.invalid) {
+      return;
+    }
+
+    if (this.registerForm.value.password !== this.registerForm.value.confirmPassword) {
+      this.errorMessage = 'Las contraseñas no coinciden';
       return;
     }
 

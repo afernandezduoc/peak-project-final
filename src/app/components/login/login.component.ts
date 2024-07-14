@@ -10,8 +10,8 @@ import { UserService } from '../../services/user.service';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup = new FormGroup({});
-  errorMessage: string = '';
   submitted = false;
+  errorMessage: string = '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
-      email: ['', Validators.required],
+      username: ['', Validators.required],
       password: ['', Validators.required]
     });
   }
@@ -34,21 +34,32 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    const { email, password } = this.loginForm.value;
+    const { username, password } = this.loginForm.value;
+    console.log(`Attempting login with username: ${username} and password: ${password}`);
 
-    this.userService.authenticateUser(email, password).subscribe({
+    this.userService.authenticateUser(username, password).subscribe({
       next: (users) => {
+        console.log('Users fetched:', users);
         if (users.length > 0) {
           localStorage.setItem('currentUser', JSON.stringify(users[0]));
           this.router.navigate(['/home']);
         } else {
-          this.errorMessage = 'Email o contraseña incorrectos';
+          this.errorMessage = 'Usuario o contraseña incorrectos';
         }
       },
       error: (error) => {
         this.errorMessage = error.message;
+        console.error('Error during authentication:', error);
       }
     });
+  }
+
+  goToRegister() {
+    this.router.navigate(['/register']);
+  }
+
+  goToPasswordRecovery() {
+    this.router.navigate(['/password-recovery']);
   }
 
   goBack() {

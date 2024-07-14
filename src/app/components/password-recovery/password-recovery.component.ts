@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 export class PasswordRecoveryComponent implements OnInit {
   passwordRecoveryForm: FormGroup = new FormGroup({});
   submitted = false;
+  message: string = '';
   errorMessage: string = '';
 
   constructor(
@@ -39,9 +40,10 @@ export class PasswordRecoveryComponent implements OnInit {
       next: (users) => {
         const user = users.find((u: any) => u.email === email);
         if (user) {
-          alert('Se ha enviado un correo de recuperación a su dirección de email.');
-          this.router.navigate(['/login']);
+          this.message = 'Se ha enviado un correo de recuperación a su dirección de email.';
+          this.errorMessage = '';
         } else {
+          this.message = '';
           this.errorMessage = 'El correo electrónico no está registrado.';
         }
       },
@@ -49,5 +51,9 @@ export class PasswordRecoveryComponent implements OnInit {
         this.errorMessage = error.message;
       }
     });
+  }
+
+  onCancel() {
+    this.router.navigate(['/login']);
   }
 }
