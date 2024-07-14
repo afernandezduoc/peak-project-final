@@ -1,0 +1,116 @@
+<header id="header" class="text-white py-3">
+    <div class="container d-flex justify-content-between align-items-center">
+        <!-- LOGO -->
+        <div id="logo">
+            <img src="assets/images/PEAK.jpg" class="app-logo" alt="Logotipo" style="height: 65px;" />
+        </div>
+
+        <!-- MENU -->
+        <nav id="menu">
+            <ul class="nav">
+                <li class="nav-item"><a [routerLink]="['/']" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="#about" class="nav-link">Sobre nosotros</a></li>
+                <li class="nav-item"><a href="#services" class="nav-link">Servicios</a></li>
+                <li class="nav-item"><a href="#contact" class="nav-link">Contactanos</a></li>
+                <li class="nav-item" *ngIf="!userDisplayName">
+                    <button id="btnLogin" (click)="openLogin()" class="btn btn-secondary">Entrar</button>
+                </li>
+                <li class="nav-item dropdown" *ngIf="userDisplayName">
+                    <button id="btnUser" class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ userDisplayName }}
+                    </button>
+                    <ul class="dropdown-menu" aria-expanded="false">
+                        <li><a class="dropdown-item" (click)="openUser()">Perfil</a></li>
+                        <li><a class="dropdown-item" (click)="openPrivateSection()">Private Section</a></li>
+                        <li><a class="dropdown-item btn-danger" (click)="logout()">Cerrar Sesión</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- LIMPIAR FLOTADOS -->
+        <div class="clearfix"></div>
+    </div>
+</header>
+
+
+
+
+
+<div id="slider" class="slider-big">
+    <div>
+        <img class="slider img-fluid" src="assets/images/puerto-natales.jpg">
+        <div class="welcome text-center text-white">
+            <h1>Bienvenido a PEAK</h1>
+            <h2>Diving Services</h2>
+        </div>
+    </div>
+</div>
+
+<div class="container my-5">
+    <section id="about">
+        <h2 class="subheader">Sobre nosotros</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut aliquet at orci ac sagittis. Etiam rutrum nisi sed tellus eleifend egestas...</p>
+    </section>
+    <div class="clearfix"></div>
+    <section id="services" class="mt-5">
+        <h2>¿Que es lo que hacemos?</h2>
+        <ul class="list-group">
+            <li class="list-group-item">Búsqueda bajo el Agua</li>
+            <li class="list-group-item">Detección de filtraciones</li>
+            <li class="list-group-item">Inspecciones submarinas</li>
+            <li class="list-group-item">Inspecciones en Muelles y Puertos</li>
+            <li class="list-group-item">Apoyo en servicios de Buceo</li>
+            <li class="list-group-item">Modelado 3D y renderizado de estructuras submarinas</li>
+            <li class="list-group-item">Búsqueda y recuperación de objetos perdidos en el fondo del mar</li>
+        </ul>
+    </section>
+</div>
+
+<!-- Contact section -->
+<section class="contact text-white py-5" id="contact">
+    <div class="container">
+        <h2>Contactanos</h2>
+        <div class="companydata">
+            Puerto Natales, Chile<br>
+            Phone: +56 912345678<br>
+            <!-- <address>
+                <a href="mailto:info@correo.cl" class="text-white">Email</a><br>
+            </address> -->
+            <p class="w3-opacity w3-center"><i>¡También nos puedes escribir en este formulario!</i></p>
+        </div>
+        <div class="contact-form-container">
+            <div class="contact-form">
+                <form action="https://formspree.io/f/xoqygpgw" method="POST" class="p-4 rounded shadow">
+                    <div class="form-group">
+                        <label for="name">Nombre</label>
+                        <input type="text" id="name" name="sender-name" class="form-control" placeholder="Ingrese su Nombre" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="sender-email" class="form-control" placeholder="Ingrese su Email" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Teléfono</label>
+                        <input type="phone" id="phone" name="sender-phone" class="form-control" placeholder="Ingrese su número de teléfono" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Mensaje</label>
+                        <textarea id="message" cols="60" rows="10" class="form-control" placeholder="Escriba su mensaje" name="message" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-secondary">Enviar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer id="footer" class="text-dark py-3">
+    <div class="container text-center">
+        <p class="mb-0">&copy; Copyright 2024</p>
+        <p class="mb-0">Desarrollado por <a href="https://www.linkedin.com/in/alejandrofernandezb/" target="_blank">Alejandro Fernández Barrientos</a></p>
+        <button class="btn btn-link" id="scroll-up"><img src="assets/icons/arrow-up.png" class="socicon up-arrow" alt="scroll-up" /></button>
+    </div>
+</footer>
