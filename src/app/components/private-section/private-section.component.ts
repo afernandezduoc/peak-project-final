@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { StorageService } from '../../services/storage.service';
 
 @Component({
   selector: 'app-private-section',
@@ -7,14 +8,17 @@ import { Router } from '@angular/router';
   styleUrls: ['./private-section.component.css']
 })
 export class PrivateSectionComponent {
-  constructor(private router: Router) {}
+  constructor(private router: Router, private storageService: StorageService) {}
 
   viewPdf(pdfUrl: string) {
-    this.router.navigate(['/pdf-viewer'], { queryParams: { pdfUrl: pdfUrl } });
+    console.log(`Storing PDF URL: ${pdfUrl}`);
+    this.storageService.setItem('pdfUrl', pdfUrl);
+    console.log('Navigating to /pdf-viewer');
+    this.router.navigate(['/pdf-viewer']);
   }
 
   logout() {
-    localStorage.removeItem('authenticated');
+    this.storageService.removeItem('currentUser');
     this.router.navigate(['/']);
   }
 

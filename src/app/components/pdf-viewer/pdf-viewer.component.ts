@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
+import { StorageService } from '../../services/storage.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
@@ -8,15 +9,25 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
   styleUrls: ['./pdf-viewer.component.css']
 })
 export class PdfViewerComponent implements OnInit {
-  pdfUrl: SafeResourceUrl = '';
+  pdfUrl: SafeResourceUrl | null = null;
 
-  constructor(private route: ActivatedRoute, private sanitizer: DomSanitizer, private router: Router) {}
+  constructor(private router: Router, private storageService: StorageService, private sanitizer: DomSanitizer) {}
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      const pdfUrl = params['pdfUrl'];
-      this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(pdfUrl);
-    });
+    try {
+      const url = this.storageService.getItem('pdfUrl');
+      console.log(`Retrieved PDF URL: ${url}`);
+      if (!url) {
+        console.log('No URL found, navigating to home');
+        this.router.navigate(['/']);
+      } else {
+        this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+        console.log(`Sanitized PDF URL: ${this.pdfUrl}`);
+      }
+    } catch (error) {
+      console.error('Error in ngOnInit:', error);
+      this.router.navigate(['/']);
+    }
   }
 
   goBack() {

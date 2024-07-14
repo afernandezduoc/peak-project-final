@@ -18,19 +18,23 @@ export class StorageService {
 
   getItem(key: string): string | null {
     if (this.isLocalStorageAvailable()) {
-      return localStorage.getItem(key);
+      const item = localStorage.getItem(key);
+      console.log(`Getting item from localStorage: ${key} = ${item}`);
+      return item;
     }
     return null;
   }
 
   setItem(key: string, value: string): void {
     if (this.isLocalStorageAvailable()) {
+      console.log(`Setting item in localStorage: ${key} = ${value}`);
       localStorage.setItem(key, value);
     }
   }
 
   removeItem(key: string): void {
     if (this.isLocalStorageAvailable()) {
+      console.log(`Removing item from localStorage: ${key}`);
       localStorage.removeItem(key);
     }
   }
