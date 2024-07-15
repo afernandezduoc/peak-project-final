@@ -1,56 +1,69 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import { HomeComponent } from './home.component';
-import { AuthService } from '../../services/auth.service';
-import { RouterTestingModule } from '@angular/router/testing';
+import { StorageService } from '../../services/storage.service';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
-  let authService: AuthService;
+  let router: Router;
+  let storageService: StorageService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ HomeComponent ],
-      imports: [ RouterTestingModule ],
-      providers: [ AuthService ]
-    })
-    .compileComponents();
-  });
+    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
-  beforeEach(() => {
+    await TestBed.configureTestingModule({
+      declarations: [HomeComponent],
+      providers: [
+        { provide: Router, useValue: routerSpy },
+        StorageService
+      ]
+    }).compileComponents();
+
     fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;
-    authService = TestBed.inject(AuthService);
-    fixture.detectChanges();
+    router = TestBed.inject(Router);
+    storageService = TestBed.inject(StorageService);
+
+    // Espiar los métodos directamente en el servicio
+    spyOn(storageService, 'getItem').and.callThrough();
+    spyOn(storageService, 'removeItem').and.callThrough();
   });
 
-  it('should create', () => {
+  afterEach(() => {
+    (storageService.getItem as jasmine.Spy).calls.reset();
+    (storageService.removeItem as jasmine.Spy).calls.reset();
+  });
+
+  it('should create the component', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should show login button when user is not authenticated', () => {
-    spyOn(authService, 'isAuthenticated').and.returnValue(false);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('#btnLogin')).toBeTruthy();
+  it('should retrieve the username from localStorage', () => {
+    (storageService.getItem as jasmine.Spy).and.returnValue(JSON.stringify({ username: 'testUser', email: 'test@example.com' }));
+    component.ngOnInit();
+    expect(storageService.getItem).toHaveBeenCalledWith('currentUser');
+    expect(component.userDisplayName).toBe('testUser');
   });
 
-  it('should show user menu when user is authenticated', () => {
-    spyOn(authService, 'isAuthenticated').and.returnValue(true);
-    spyOn(authService, 'getAuthenticatedUser').and.returnValue({ username: 'testuser' });
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('#btnUser')).toBeTruthy();
+  it('should navigate to login', () => {
+    component.openLogin();
+    expect(router.navigate).toHaveBeenCalledWith(['/login']);
   });
 
-  it('should call logout method of AuthService when logout button is clicked', () => {
-    spyOn(authService, 'isAuthenticated').and.returnValue(true);
-    spyOn(authService, 'getAuthenticatedUser').and.returnValue({ username: 'testuser' });
-    spyOn(authService, 'logout').and.callThrough();
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement;
-    const logoutButton = compiled.querySelector('#btnUser + .dropdown-menu .dropdown-item:last-child');
-    logoutButton.click();
-    expect(authService.logout).toHaveBeenCalled();
+  it('should navigate to profile modification', () => {
+    component.openUser();
+    expect(router.navigate).toHaveBeenCalledWith(['/profile-modification']);
+  });
+
+  it('should navigate to private section', () => {
+    component.openPrivateSection();
+    expect(router.navigate).toHaveBeenCalledWith(['/private-section']);
+  });
+
+  it('should log out and navigate to home', () => {
+    component.logout();
+    expect(storageService.removeItem).toHaveBeenCalledWith('currentUser');
+    expect(router.navigate).toHaveBeenCalledWith(['/']);
   });
 });

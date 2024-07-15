@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { ReactiveFormsModule } from '@angular/forms';
 import { ProfileModificationComponent } from './profile-modification.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { UserService } from '../../services/user.service';
 
 describe('ProfileModificationComponent', () => {
   let component: ProfileModificationComponent;
@@ -8,12 +10,11 @@ describe('ProfileModificationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ProfileModificationComponent ]
-    })
-    .compileComponents();
-  });
+      imports: [ReactiveFormsModule, HttpClientTestingModule],
+      declarations: [ProfileModificationComponent],
+      providers: [UserService]
+    }).compileComponents();
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(ProfileModificationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

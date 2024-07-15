@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { AdminSectionComponent } from './admin-section.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { UserService } from '../../services/user.service';
 
 describe('AdminSectionComponent', () => {
   let component: AdminSectionComponent;
@@ -8,12 +9,11 @@ describe('AdminSectionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AdminSectionComponent ]
-    })
-    .compileComponents();
-  });
+      imports: [HttpClientTestingModule],
+      declarations: [AdminSectionComponent],
+      providers: [UserService]
+    }).compileComponents();
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(AdminSectionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

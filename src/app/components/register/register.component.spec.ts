@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { ReactiveFormsModule } from '@angular/forms';
 import { RegisterComponent } from './register.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { UserService } from '../../services/user.service';
 
 describe('RegisterComponent', () => {
   let component: RegisterComponent;
@@ -8,12 +10,11 @@ describe('RegisterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RegisterComponent ]
-    })
-    .compileComponents();
-  });
+      imports: [ReactiveFormsModule, HttpClientTestingModule],
+      declarations: [RegisterComponent],
+      providers: [UserService]
+    }).compileComponents();
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(RegisterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
